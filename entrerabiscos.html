@@ -132,13 +132,15 @@
       margin: 80px auto 40px;
       text-align: center;
     }
-    .video-section iframe,
-    .video-section video {
+
+    .video-section iframe {
       width: 100%;
-      max-width: 900px;
+      aspect-ratio: 16 / 9; /* Mantém proporção correta em qualquer ecrã */
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
+
+
 
     /* GIFs */
     .gif-gallery {
@@ -416,20 +418,20 @@
 
   <!-- Vídeo -->
   <section class="video-section container">
-    <h2>Vídeo do Projeto</h2>
+    <!-- <h2>Vídeo do Projeto</h2>
 
     <video controls>
       <source src="media/Entre rabiscos site/video/Trailer_EntreRabiscos_MatildeRibeiro.mp4" type="video/mp4">
       O seu navegador não suporta vídeo HTML5.
-    </video>
+    </video> -->
 
     <!-- Exemplo YouTube -->
     
-  <!--   <iframe src="https://www.youtube.com/embed/SEU_VIDEO_ID" 
+    <iframe src="https://www.youtube.com/embed/GKGJCyEAKDQ" 
         frameborder="0" 
         allowfullscreen>
     </iframe>
-    -->
+   
   </section>
 
   <!-- GIFs -->
