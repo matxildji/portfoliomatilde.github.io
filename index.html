@@ -22,18 +22,16 @@
       color: var(--text);
       scroll-behavior: smooth;
       cursor: none;
-      padding-top: 80px;
+      padding-top: 80px; /* espaço para a navbar fixed-top */
     }
-
-    
 
     /* Navbar */
     .navbar {
       background: var(--bg);
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      padding-top: 40px;    /* experimenta 12–30px conforme gostes */
+      padding-top: 40px;    /* ajusta conforme gostes */
       padding-bottom: 15px;
-      
+      z-index: 1100; /* garante que a navbar fica acima do hero */
     }
     .navbar .nav-link {
       font-size: 1.5rem;
@@ -44,19 +42,16 @@
     .navbar .nav-link:hover {
       color: var(--accent);
     }
-
     .navbar .navbar-brand {
       font-size: 1.7rem;
       font-weight: bold;
     }
 
-
     section {
       padding: 40px 0;
     }
-    
 
-    /* Hero com vídeo */
+    /* Hero com GIF */
     .hero {
       position: relative;
       height: 100vh;
@@ -65,8 +60,9 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      background-color: #f1e7cc; /* cor de fundo atrás do GIF */
     }
-       
+
     @media (max-width: 768px) {
       .hero { height: 70vh; }
     }
@@ -74,21 +70,30 @@
       .hero { height: 60vh; }
     }
 
-
+    /* Caso uses vídeo nativo: object-fit corrigido (opção) */
     .hero video {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: con;   
-      background:  #f1e7cc; /* cor de fundo atrás do vídeo */
-      z-index: -1;
-      
+      object-fit: cover; /* ou contain, conforme queiras */
+      background:  #f1e7cc;
+      z-index: -2;
     }
 
-    
-    
+    /* Forçar o img do hero a caber todo no viewport (mostra inteiro) */
+    .hero img {
+      position: absolute;
+      inset: 0;                 /* top:0; right:0; bottom:0; left:0; */
+      width: 100%;
+      height: 100%;
+      object-fit: contain;      /* <-- mantém todo o GIF visível */
+      object-position: center;
+      display: block;
+      z-index: 0;              /* por trás do conteúdo */
+      background: #f1e7cc;      /* cor de fundo nas laterais, caso existam barras */
+    }
 
     /* Projetos */
     .project-card {
@@ -99,9 +104,9 @@
     }
 
     .project-card img {
-    height: 420px; /* define a altura fixa para todas */
-    object-fit: cover; /* corta e centraliza */
-    border-bottom: 3px solid var(--accent); /* opcional: separador bonito */
+      height: 420px; /* define a altura fixa para todas */
+      object-fit: cover; /* corta e centraliza */
+      border-bottom: 3px solid var(--accent);
     }
 
     .project-card:hover {
@@ -134,6 +139,7 @@
       background: var(--accent);
       color: #fff;
       text-align: center;
+      margin-top: 40px;
     }
     footer .footer-logo {
       max-width: 400px;
@@ -177,7 +183,6 @@
       z-index: 2000;
     }
 
-    
     @media (max-width: 768px) {
       .navbar { padding-top: 15px; padding-bottom: 10px; }
       #translate-buttons { margin-top: 10px; display: flex; gap: 5px; }
@@ -189,21 +194,8 @@
       #about img { max-width: 250px; margin-bottom: 20px; }
       #about .about-text { font-size: 1rem; padding: 15px; }
     }
-
-
-   
-   
-    
-    
-
-
-    
-
-
   </style>
 </head>
-
-
 
 <script>
   // Criar cookie para forçar Google Translate
@@ -247,49 +239,40 @@
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-
-
-
-
 <body>
   <!-- Cursor -->
-  <div class="cursor"></div>
+  <div class="cursor" aria-hidden="true"></div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#home">Portfólio</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Alternar navegação">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects">Projetos</a></li>
           <li class="nav-item"><a class="nav-link" href="#about">Sobre Mim</a></li>
         </ul>
-         <!-- coloca isto no nav, por exemplo depois do ul -->
-          <div id="translate-buttons" class="ms-3">
-            <button class="btn btn-custom" data-lang="pt">PT</button>
-            <button class="btn btn-custom" data-lang="en">EN</button>
-          </div>
-          <!-- manter o container do Google mas escondido -->
+        <!-- coloca isto no nav, por exemplo depois do ul -->
+        <div id="translate-buttons" class="ms-3">
+          <button class="btn btn-custom" data-lang="pt">PT</button>
+          <button class="btn btn-custom" data-lang="en">EN</button>
+        </div>
+        <!-- manter o container do Google mas escondido -->
         <div id="google_translate_element" style="display:none;"></div>
-
       </div>
     </div>
   </nav>
 
   <!-- Hero -->
-  <section id="home" class="hero">
-    <video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="media/source/videoinicia.mp4">
-      <source src="media/source/videoinicia.mp4" type="video/mp4">
-      O seu navegador não suporta vídeo HTML5.
-    </video>
-
-    <!-- <div class="hero-content">
-      <h1>Bem-vinda ao meu Portfólio ✨</h1>
-    </div> -->
+  <section id="home" class="hero" role="img" aria-label="GIF de abertura">
+    <!-- Mantive o img para o GIF; object-fit: contain no CSS garante que aparece todo -->
+    <img src="media/source/videoinicial.gif" alt="GIF inicial do portfólio">
+    <!-- Se quiseres conteúdo sobre o GIF (ex: título), adiciona aqui e terá z-index acima do img -->
+    <!-- <div class="hero-content"><h1>Bem-vinda ao meu Portfólio ✨</h1></div> -->
   </section>
 
   <!-- Projetos -->
@@ -311,7 +294,6 @@
         </div>
 
         <div class="col-sm-6 col-md-6 col-lg-3">
-
           <div class="card project-card">
             <img src="media/ambivalencia/fotos/IMG_0719.JPG" class="card-img-top" alt="Projeto 2">
             <div class="card-body">
@@ -323,7 +305,6 @@
         </div>
 
         <div class="col-sm-6 col-md-6 col-lg-3">
-
           <div class="card project-card">
             <img src="media/jonas/IMG_3008.PNG" class="card-img-top" alt="Projeto 3">
             <div class="card-body">
@@ -335,7 +316,6 @@
         </div>
 
         <div class="col-sm-6 col-md-6 col-lg-3">
-
           <div class="card project-card">
             <img src="media/nabucco os noivos/fotos/IMG_0027.PNG" class="card-img-top" alt="Projeto 4">
             <div class="card-body">
@@ -349,7 +329,7 @@
 
       <!-- Botão para expandir -->
       <div class="text-center mt-4">
-        <button class="btn btn-custom" data-bs-toggle="collapse" data-bs-target="#moreProjects">
+        <button class="btn btn-custom" data-bs-toggle="collapse" data-bs-target="#moreProjects" aria-expanded="false" aria-controls="moreProjects">
           Ver mais projetos
         </button>
       </div>
@@ -359,112 +339,99 @@
         <div class="row g-4">
           <!-- Projeto 5 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
               <img src="media/cegonha e raposa/fotos/cegona.png" class="card-img-top" alt="Projeto 5">
               <div class="card-body">
                 <h5 class="card-title">La Regard et La Cigogne</h5>
                 <p class="card-text">Ilustração e Animação</p>
-              <a href="cegonha.html" class="btn btn-custom">Ver mais</a>
-
+                <a href="cegonha.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
 
           <!-- Projeto 6 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
               <img src="media/CTOE/ctoe.png" class="card-img-top" alt="Projeto 6">
               <div class="card-body">
                 <h5 class="card-title">CTOE</h5>
                 <p class="card-text">Ilustração e Animação</p>
-              <a href="ctoe.html" class="btn btn-custom">Ver mais</a>
+                <a href="ctoe.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
 
           <!-- Projeto 7 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
               <img src="media/super bock e sbsr/IMG_0122.JPG" class="card-img-top" alt="Projeto 7">
               <div class="card-body">
                 <h5 class="card-title">Super Bock</h5>
                 <p class="card-text">Design e Ilustração</p>
-              <a href="superbock.html" class="btn btn-custom">Ver mais</a>
+                <a href="superbock.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
 
           <!-- Projeto 8 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
               <img src="media/receitainfog/IMG_0751.PNG" class="card-img-top" alt="Projeto 8">
               <div class="card-body">
                 <h5 class="card-title">Receita Infográfica</h5>
                 <p class="card-text">Design e Ilustração</p>
-              <a href="receita.html" class="btn btn-custom">Ver mais</a>
+                <a href="receita.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
 
           <!-- Projeto 9 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
               <img src="media/super bock e sbsr/sbr.png" class="card-img-top" alt="Projeto 9">
               <div class="card-body">
                 <h5 class="card-title">Super Bock Super Rock</h5>
                 <p class="card-text">Design e Ilustração</p>
-              <a href="superbocksr.html" class="btn btn-custom">Ver mais</a>
+                <a href="superbocksr.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
 
           <!-- Projeto 10 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
               <img src="media/neme/IMG_0724.JPG" class="card-img-top" alt="Projeto 10">
               <div class="card-body">
                 <h5 class="card-title">NEME</h5>
                 <p class="card-text">Branding, Design, Animação e Ilustração</p>
-              <a href="neme.html" class="btn btn-custom">Ver mais</a>
+                <a href="neme.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
-
-
 
           <!-- Projeto 11 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
-              <img src="media/projetos pessoais/fotos/10.PNG" class="card-img-top" alt="Projeto 10">
+              <img src="media/projetos pessoais/fotos/10.PNG" class="card-img-top" alt="Projeto 11">
               <div class="card-body">
                 <h5 class="card-title">Ilustrações</h5>
                 <p class="card-text">Projetos Pessoais</p>
-              <a href="ilustracao.html" class="btn btn-custom">Ver mais</a>
+                <a href="ilustracao.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
 
-          
           <!-- Projeto 12 -->
           <div class="col-sm-6 col-md-6 col-lg-3">
-
             <div class="card project-card">
-              <img src="media/projetos pessoais/videos gifs/gifbola.gif" class="card-img-top" alt="Projeto 10">
+              <img src="media/projetos pessoais/videos gifs/gifbola.gif" class="card-img-top" alt="Projeto 12">
               <div class="card-body">
                 <h5 class="card-title">Animações</h5>
                 <p class="card-text">Projetos Pessoais</p>
-              <a href="animacao.html" class="btn btn-custom">Ver mais</a>
+                <a href="animacao.html" class="btn btn-custom">Ver mais</a>
               </div>
             </div>
           </div>
-
 
         </div>
       </div>
@@ -473,42 +440,39 @@
   </section>
 
   <!-- About -->
-<section id="about" class="fade-in">
-  <div class="container">
-    <div class="row align-items-center text-center text-md-start">
-      <!-- Foto -->
-      <div class="col-12 col-md-5 mb-4 mb-md-0">
-        <img src="media/source/mt.PNG" alt="Matilde" class="img-fluid rounded-4">
+  <section id="about" class="fade-in">
+    <div class="container">
+      <div class="row align-items-center text-center text-md-start">
+        <!-- Foto -->
+        <div class="col-12 col-md-5 mb-4 mb-md-0">
+          <img src="media/source/mt.PNG" alt="Matilde" class="img-fluid rounded-4">
+        </div>
+        <!-- Texto -->
+        <div class="col-12 col-md-7">
+          <div class="about-text p-4 rounded-4" style="background: rgba(245, 237, 216, 0.7);">
+            <h2 style="color: var(--accent);font-size:2.2rem;">Hello!</h2>
+            <p style="font-size:2.2rem; line-height:1.6;">
+              O meu nome é <span style="color:var(--accent)">Matilde</span>, tenho 21 anos e sou Licenciada em Multimédia. 
+              Os meus interesses são <span style="color:var(--accent-light)">ilustração</span> e <span style="color:var(--accent-light)">Animação 2D</span>!
+            </p>
+            <p style="margin-top:20px; font-size:1.5rem; color:var(--accent)">
+              <strong>Os meus contactos:</strong><br>
+              matxildji@gmail.com<br>
+            </p>
+          </div>
+        </div>
       </div>
-      <!-- Texto -->
-      <div class="col-12 col-md-7">
-        <div class="about-text p-4 rounded-4" style="background: rgba(245, 237, 216, 0.7);">
-          <h2 style="color: var(--accent);font-size:2.2rem;">Hello!</h2>
-      <p style="font-size:2.2rem; line-height:1.6;">
-        O meu nome é <span style="color:var(--accent)">Matilde</span>, tenho 21 anos e sou Licenciada em Multimédia. 
-        Os meus interesses são <span style="color:var(--accent-light)">ilustração</span> e <span style="color:var(--accent-light)">Animação 2D</span>!
-      </p>
-      <p style="margin-top:20px; font-size:1.5rem; color:var(--accent)">
-        <strong>Os meus contactos:</strong><br>
-        matxildji@gmail.com<br>
-
-      </p>
     </div>
-
-  </div>
-</section>
-
+  </section>
 
   <!-- Footer -->
   <footer>
-    
     <img src="media/source/youcansee.PNG" alt="Logo Rodapé" class="footer-logo">
     <div class="social-icons">
       <a href="https://www.instagram.com/amatxildjifazcenas/"><img src="media/source/icons/instagram.PNG" alt="Instagram"></a>
       <a href="https://www.behance.net/matilderibeiro5"><img src="media/source/icons/behance.PNG" alt="Behance"></a>
       <a href="https://www.linkedin.com/in/matilde-ribeiro-7aa4022aa/"><img src="media/source/icons/linkedin.PNG" alt="LinkedIn"></a>
     </div>
-   
   </footer>
 
   <!-- Scripts -->
@@ -531,11 +495,6 @@
     document.addEventListener('mousemove', e => {
       cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
     });
-    
   </script>
-
-  
-
-  
 </body>
 </html>
